@@ -11,11 +11,13 @@
             <div class="bg-white col-md-4 overflow-hidden shadow-xl sm:rounded-lg">
                 <form action="{{ url('category/update/'.$categories->id) }}" method="post">
                     @csrf
+                    <div>
                     <label for="category_name">Category Name</label>
                     <input type="text" class="form-control" id="category_name" name="category_name" value="{{$categories->category_name}}" /> 
                     @error('category_name')
                         <span class="text-danger">{{$message}}</span>
                     @enderror
+                    </div>
                     <button type="submit" class="btn">Submit</button>
                 </form>
             </div>
