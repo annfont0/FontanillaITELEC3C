@@ -39,6 +39,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{$categories->links()}}
             </div>
             <h1>Add Category</h1>
             <div class="bg-white col-md-4 overflow-hidden shadow-xl sm:rounded-lg">  
