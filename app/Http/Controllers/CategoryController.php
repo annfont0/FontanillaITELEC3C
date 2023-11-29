@@ -46,6 +46,8 @@ class CategoryController extends Controller
         $imagePath = null;
         if ($request->hasFile('category_img')) {
             $imagePath = $request->file('category_img')->storeAs('category_images', $request->file('category_img')->getClientOriginalName(), 'public');
+        } else {
+            $imagePath = Category::find($id)->category_img;
         }
 
         Category::find($id)->update([
