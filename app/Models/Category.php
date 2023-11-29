@@ -14,8 +14,11 @@ class Category extends Model
     // protected $table = 'categories';
     protected $fillable = [
         'category_name',
+        'category_img',
         'user_id'
     ];
+
+    protected $dates = ['deleted_at'];
 
     public function user() {
         return $this->hasOne(User::class, 'id', 'user_id');

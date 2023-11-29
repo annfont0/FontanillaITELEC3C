@@ -7,6 +7,7 @@ use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -21,8 +22,11 @@ class CategoryController extends Controller
             'category_name' => 'required|unique:categories|max:255'
         ]);
 
+        $imagePath = $request->file('category_img')->storeAs('category_images', $request->file('category_img')->getClientOriginalName(), 'public');
+
         Category::create([
             'category_name' => $request->category_name,
+            'category_img' => $imagePath,
             'user_id' => Auth::user()->id,
             'created_at' => Carbon::now()
         ]);
@@ -35,14 +39,25 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $validated =  $request->validate([
-            'category_name' => 'required|unique:categories|max:255'
+        $request->validate([
+            'category_name' => 'required|max:255'
         ]);
 
-        $update = Category::find($id)->update([
+        $imagePath = null;
+        if ($request->hasFile('category_img')) {
+            $imagePath = $request->file('category_img')->storeAs('category_images', $request->file('category_img')->getClientOriginalName(), 'public');
+        }
+
+        Category::find($id)->update([
             'category_name' => $request->category_name,
+            'category_img' => $imagePath,
             'user_id' => Auth::user()->id
         ]);
         return Redirect()->route('AllCat')->with('success', 'Updated successfully');
+    }
+
+    public function delete ($id) {
+        Category::find($id)->delete();
+        return Redirect()->back()->with('success', 'category deleted');
     }
 }
